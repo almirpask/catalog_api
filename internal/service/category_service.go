@@ -9,7 +9,7 @@ type CategoryService struct {
 	CategoryDb database.CategoryDB
 }
 
-func NewCategory(categoryDb database.CategoryDB) *CategoryService {
+func NewCategoryService(categoryDb database.CategoryDB) *CategoryService {
 	return &CategoryService{
 		CategoryDb: categoryDb,
 	}

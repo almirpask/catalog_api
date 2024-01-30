@@ -9,7 +9,7 @@ type ProductService struct {
 	ProductDB database.ProductDB
 }
 
-func NewProduct(productDb database.ProductDB) *ProductService {
+func NewProductService(productDb database.ProductDB) *ProductService {
 	return &ProductService{
 		ProductDB: productDb,
 	}
