@@ -38,7 +38,7 @@ func (cd *CategoryDB) GetCategories() ([]*entity.Category, error) {
 
 func (cd *CategoryDB) GetCategory(id string) (*entity.Category, error) {
 	var category entity.Category
-	row := cd.db.QueryRow("SELECT id, name FROM categories WHERE id = $1", id)
+	row := cd.db.QueryRow("SELECT id, name FROM categories WHERE id = ?", id)
 	if err := row.Scan(&category.ID, &category.Name); err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (cd *CategoryDB) GetCategory(id string) (*entity.Category, error) {
 }
 
 func (cd *CategoryDB) CreateCategory(category *entity.Category) (string, error) {
-	_, err := cd.db.Exec("INSERT INTO categories (id, name) VALUES ($1, $2)", category.ID, category.Name)
+	_, err := cd.db.Exec("INSERT INTO categories (id, name) VALUES (?, ?)", category.ID, category.Name)
 
 	if err != nil {
 		return "", err
