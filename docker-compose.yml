@@ -9,7 +9,6 @@ services:
       - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: catalog 
-      MYSQL_PASSWORD: root
     volumes:
       - .docker/mysql:/var/lib/mysql
+      - ./db.sql:/docker-entrypoint-initdb.d/db.sql
