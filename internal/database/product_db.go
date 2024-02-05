@@ -64,7 +64,7 @@ func (pd *ProductDB) GetProductByCategoryID(categoryID string) ([]*entity.Produc
 
 }
 
-func (pd *ProductDB) CreateProduct(product *entity.Product) (string, error) {
+func (pd *ProductDB) CreateProduct(product *entity.Product) (*entity.Product, error) {
 	_, err := pd.db.Exec("INSERT INTO products (id, name, description, price, category_id, image_url) VALUES (?, ?, ?, ?, ?, ?)",
 		product.ID,
 		product.Name,
@@ -73,8 +73,6 @@ func (pd *ProductDB) CreateProduct(product *entity.Product) (string, error) {
 		product.CategoryID,
 		product.ImageURL,
 	)
-	if err != nil {
-		return "", err
-	}
-	return product.ID, nil
+
+	return product, err
 }
