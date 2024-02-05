@@ -1,15 +1,23 @@
 package main
 
 import (
+	"database/sql"
+
+	"github.com/almirpask/go_api/internal/database"
 	"github.com/almirpask/go_api/internal/entity"
 	"github.com/almirpask/go_api/internal/service"
+	_ "github.com/go-sql-driver/mysql"
 )
 
-type ProductHandler struct {
-	ProductService *service.ProductService
-}
-
 func main() {
+	db, err := sql.Open("mysql", "root:root@tcp(catalog_db:3306)/catalog")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	productDB := database.NewProductDB(db)
+	productService := service.NewProductService(*productDB)
 	products := []*entity.Product{
 		{Name: "Product 1", Description: "Description 1", Price: 100, CategoryID: "6b4c28f4-6831-495a-9444-19c93452faa3", ImageURL: "http://image_server:9000/products/1.png"},
 		{Name: "Product 2", Description: "Description 2", Price: 200, CategoryID: "6b4c28f4-6831-495a-9444-19c93452faa3", ImageURL: "http://image_server:9000/products/2.png"},
@@ -32,10 +40,9 @@ func main() {
 		{Name: "Product 19", Description: "Description 19", Price: 1900, CategoryID: "6b4c28f4-6831-495a-9444-19c93452faa3", ImageURL: "http://image_server:9000/products/19.png"},
 		{Name: "Product 20", Description: "Description 20", Price: 2000, CategoryID: "6b4c28f4-6831-495a-9444-19c93452faa3", ImageURL: "http://image_server:9000/products/20.png"},
 	}
-	productHandler := &ProductHandler{}
 
 	for _, product := range products {
-		_, err := productHandler.ProductService.CreateProduct(product.Name, product.Description, product.Price, product.CategoryID, product.ImageURL)
+		_, err := productService.CreateProduct(product.Name, product.Description, product.Price, product.CategoryID, product.ImageURL)
 		if err != nil {
 			return
 		}
